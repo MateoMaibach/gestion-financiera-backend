@@ -1,15 +1,17 @@
 import express from 'express';
-
-import {getCategorias, createCategoria, updateCategoria, deleteCategoria} from '../controllers/categorias.controller.js';
+import { verifyToken } from '../middleware/auth.middleware.js';
+import { 
+  getCategorias, 
+  createCategoria, 
+  updateCategoria, 
+  deleteCategoria
+} from '../controllers/categorias.controller.js';
 
 const router = express.Router();
 
-router.get('/', getCategorias);
-
-router.post('/',createCategoria);
-
-router.put('/:id',updateCategoria);
-
-router.delete('/:id',deleteCategoria);
+router.get('/', verifyToken, getCategorias);
+router.post('/', verifyToken, createCategoria);
+router.put('/:id', verifyToken, updateCategoria);
+router.delete('/:id', verifyToken, deleteCategoria);
 
 export default router;

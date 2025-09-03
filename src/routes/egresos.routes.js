@@ -5,12 +5,13 @@ import {
   updateEgreso,
   deleteEgreso
 } from '../controllers/egresos.controller.js';
+import { verifyToken } from '../middleware/auth.middleware.js';
 
 const router = Router();
 
-router.get('/', getEgresos);        // GET /egresos
-router.post('/', createEgreso);     // POST /egresos
-router.put('/:id', updateEgreso);   // PUT /egresos/:id
-router.delete('/:id', deleteEgreso); // DELETE /egresos/:id
+router.get('/',verifyToken, getEgresos);        // GET /egresos
+router.post('/',verifyToken, createEgreso);     // POST /egresos
+router.put('/:id',verifyToken, updateEgreso);   // PUT /egresos/:id
+router.delete('/:id',verifyToken, deleteEgreso); // DELETE /egresos/:id
 
 export default router;

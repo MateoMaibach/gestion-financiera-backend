@@ -5,6 +5,7 @@ import ingresosRoutes from './routes/ingresos.routes.js'
 import egresosRoutes from './routes/egresos.routes.js'
 import balanceRoutes from './routes/balance.routes.js'
 import kpisRoutes from './routes/kpis.routes.js'
+import authRoutes from './routes/auth.routes.js'
 dotenv.config();
 
 const app = express();
@@ -14,6 +15,7 @@ app.use('/api/ingresos', ingresosRoutes);
 app.use('/api/egresos', egresosRoutes);
 app.use('/api/balance', balanceRoutes);
 app.use('/api/kpis', kpisRoutes);
+app.use('/api/auth', authRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {

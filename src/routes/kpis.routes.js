@@ -5,15 +5,17 @@ import {
   getTodosMovimientos
 } from '../controllers/kpis.controller.js';
 
+import { verifyToken } from '../middleware/auth.middleware.js';
+
 const router = express.Router();
 
 
-router.get('/', getKpisCategorias);
+router.get('/', verifyToken, getKpisCategorias);
 
 
-router.get('/:categoriaId', getMovimientosPorCategoria);
+router.get('/:categoriaId', verifyToken, getMovimientosPorCategoria);
 
 
-router.get('/movimientos/general', getTodosMovimientos);
+router.get('/movimientos/general', verifyToken, getTodosMovimientos);
 
 export default router;

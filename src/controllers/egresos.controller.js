@@ -19,7 +19,9 @@ export const getEgresos = async (req, res) => {
 export const createEgreso = async (req, res) => {
   try {
     const { descripcion, monto, fecha, categoria_id } = req.body;
-    const newEgreso = await createEgresoService(descripcion, monto, fecha, categoria_id);
+    const usuario_id = req.user.id; // 🔐 se obtiene del token JWT
+
+    const newEgreso = await createEgresoService({ descripcion, monto, fecha, categoria_id, usuario_id });
     res.status(201).json(newEgreso);
   } catch (error) {
     res.status(500).json({ message: "Error al crear egreso" });
@@ -31,9 +33,11 @@ export const updateEgreso = async (req, res) => {
   try {
     const { id } = req.params;
     const { descripcion, monto, fecha, categoria_id } = req.body;
-    const result = await updateEgresoService(id, descripcion, monto, fecha, categoria_id);
+    const usuario_id = req.user.id;
 
-    if (result.affectedRows === 0) return res.status(404).json({ message: "Egreso no encontrado" });
+    const result = await updateEgresoService(id, { descripcion, monto, fecha, categoria_id, usuario_id });
+
+    if (result.affectedRows === 0) return res.status(404).json({ message: "Egreso no encontrado o no autorizado" });
 
     res.json({ id, descripcion, monto, fecha, categoria_id });
   } catch (error) {
@@ -45,9 +49,11 @@ export const updateEgreso = async (req, res) => {
 export const deleteEgreso = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await deleteEgresoService(id);
+    const usuario_id = req.user.id;
 
-    if (result.affectedRows === 0) return res.status(404).json({ message: "Egreso no encontrado" });
+    const result = await deleteEgresoService(id, usuario_id);
+
+    if (result.affectedRows === 0) return res.status(404).json({ message: "Egreso no encontrado o no autorizado" });
 
     res.sendStatus(204);
   } catch (error) {
